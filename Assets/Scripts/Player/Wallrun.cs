@@ -30,7 +30,7 @@ public class Wallrun : MonoBehaviour
     void Update()
     {
 
-        if(!Player.playerInstance.Grounded && Player.playerInstance.speed>=5)
+        if(!Player.playerInstance.Grounded && Input.GetAxis("Vertical")>0)
         {
             CheckWallRun();
             if(leftWall || rightWall)
@@ -60,6 +60,7 @@ public class Wallrun : MonoBehaviour
             StopAllCoroutines();
             if (leftWall)
             {
+                //playerCamera.transform.localRotation=Quaternion.RotateTowards(playerCamera.transform.localRotation,Quaternion.Euler())
                 StartCoroutine(TiltCamera(25, 1.5f));
 
             }
@@ -70,13 +71,13 @@ public class Wallrun : MonoBehaviour
             StartCoroutine(ChangeCamFOV(70, 2f));
         }
         WallRunMode = true;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             if (leftWall)
-                wallRunJumpDirection = playerCamera.transform.up + leftWallHit.normal;
+                wallRunJumpDirection = transform.up + leftWallHit.normal;
             else if (rightWall)
-                wallRunJumpDirection = playerCamera.transform.up + rightWallHit.normal;
-            playerRigidbody.AddForce(wallRunJumpDirection * wallRunJumpForce * 100, ForceMode.Force);
+                wallRunJumpDirection = transform.up + rightWallHit.normal;
+            playerRigidbody.AddForce(wallRunJumpDirection * wallRunJumpForce, ForceMode.VelocityChange);
         }
     }
     void StopWallRun()
@@ -95,7 +96,7 @@ public class Wallrun : MonoBehaviour
         float t = 0;
         while(t<Duration)
         {
-            playerCamera.transform.localRotation = Quaternion.Slerp(playerCamera.transform.localRotation, Quaternion.Euler(playerCamera.transform.localRotation.x, 0, Tilt), t / Duration);
+            playerCamera.transform.localRotation = Quaternion.Slerp(playerCamera.transform.localRotation, Quaternion.Euler(playerCamera.transform.localRotation.eulerAngles.x, playerCamera.transform.localRotation.eulerAngles.y, Tilt), t / Duration);
             yield return null;
             t += Time.deltaTime;
         }

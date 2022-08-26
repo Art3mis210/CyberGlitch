@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     bool MovementEnabled = true;
     public bool Grounded;
     [SerializeField] float JumpForce;
+    CharacterController controller;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float SprintSpeed;
 
     //rotation
     [SerializeField] Transform cameraTransform;
@@ -25,23 +28,21 @@ public class Player : MonoBehaviour
     float CameraRotation = 0;
     bool RotationEnabled = true;
 
-    //animation
-    public Animator CurrentAnimator;
-
     //Physcis
     Rigidbody playerRigidbody;
 
-    Vector3 moveDirection;
+    public Vector3 moveDirection;
     private void Start()
     {
         playerInstance = this;
         playerRigidbody = GetComponent<Rigidbody>();
+        moveDirection = Vector3.zero;
+        controller = GetComponent<CharacterController>();
         
     }
     // Update is called once per frame
     void Update()
     {
-
         Movement();
         PlayerRotate();
     }
@@ -51,30 +52,39 @@ public class Player : MonoBehaviour
         {
             if (Grounded || Wallrun.WallRunInstance.WallRunMode)
             {
+                //jump
+
+
                 //movement
-                moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-                if (moveDirection.z > 0)
-                    speed = 5 + Input.GetAxis("Sprint") * 10;
+                moveDirection.x = Input.GetAxis("Horizontal");
+                moveDirection.z = Input.GetAxis("Vertical");
+
+                if (moveDirection.z > 0 && Input.GetAxis("Sprint") > 0)
+                    speed = SprintSpeed;
+                else if (moveDirection.magnitude > 0)
+                    speed = walkSpeed;
                 else
-                    speed = 5;
+                    speed = 0;
+
                 moveDirection.Normalize();
-                moveDirection = transform.TransformDirection(moveDirection);
                 moveDirection *= speed;
-                moveDirection.y = playerRigidbody.velocity.y;
+                moveDirection = transform.TransformDirection(moveDirection);
+
                 playerRigidbody.velocity = moveDirection;
 
-                CurrentAnimator.SetFloat("Speed", playerRigidbody.velocity.magnitude);
-                //jump
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space))
                 {
-                    playerRigidbody.AddForce(transform.up * JumpForce, ForceMode.Impulse);
+                    playerRigidbody.AddForce(transform.up * JumpForce, ForceMode.VelocityChange);
                 }
+
+
             }
             else
             {
-                CurrentAnimator.SetFloat("Speed", 0);
+                speed = 0;
             }
         }
+        
     }
     void PlayerRotate()
     {
