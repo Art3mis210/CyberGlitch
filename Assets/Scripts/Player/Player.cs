@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     CharacterController controller;
     [SerializeField] float walkSpeed;
     [SerializeField] float SprintSpeed;
+    public bool GrappleMode;
 
     //rotation
     [SerializeField] Transform cameraTransform;
@@ -50,11 +51,17 @@ public class Player : MonoBehaviour
     {
         if (MovementEnabled)
         {
-            if (Grounded || Wallrun.WallRunInstance.WallRunMode)
+            if(GrappleMode)
+            {
+                moveDirection.x = Input.GetAxis("Horizontal");
+                moveDirection.z = Input.GetAxis("Vertical");
+                moveDirection = cameraTransform.TransformDirection(moveDirection);
+                playerRigidbody.AddForce(moveDirection);
+            }
+
+            else if (Grounded || Wallrun.WallRunInstance.WallRunMode)
             {
                 //jump
-
-
                 //movement
                 moveDirection.x = Input.GetAxis("Horizontal");
                 moveDirection.z = Input.GetAxis("Vertical");

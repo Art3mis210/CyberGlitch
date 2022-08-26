@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     Animator CurrentAnimator;
+    [SerializeField] bool ShootingWeapon;
     private void Start()
     {
         CurrentAnimator = GetComponent<Animator>();
@@ -20,11 +21,11 @@ public class PlayerAnimation : MonoBehaviour
             CurrentAnimator.SetFloat("Speed", 0);
         }
 
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             CurrentAnimator.SetTrigger("Primary");
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             CurrentAnimator.SetTrigger("Secondary");
         }
