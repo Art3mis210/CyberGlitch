@@ -30,7 +30,7 @@ public class Wallrun : MonoBehaviour
     void Update()
     {
 
-        if(!Player.playerInstance.Grounded && Player.playerInstance.speed>=10)
+        if(!Player.playerInstance.Grounded && Player.playerInstance.speed>=5)
         {
             CheckWallRun();
             if(leftWall || rightWall)
