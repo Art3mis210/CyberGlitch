@@ -1149,6 +1149,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95962789181006246, guid: de6333fe66ab20544851ed2af39b3db1, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 33ef64b1e9e97fe4da45b5d102b60e08, type: 2}
     - target: {fileID: 137210387638734308, guid: de6333fe66ab20544851ed2af39b3db1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1726,7 +1730,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentWeaponType: 0
-  ShootingWeapon: 0
 --- !u!114 &1884098557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1746,6 +1749,8 @@ MonoBehaviour:
   MaxDistance: 25
   player: {fileID: 1720111260}
   GrappleTip: {fileID: 645434327}
+  playerRigidbody: {fileID: 0}
+  jumpForce: 0
 --- !u!120 &1884098558
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2013,6 +2018,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1017530589}
     m_Modifications:
+    - target: {fileID: 4091974303891567794, guid: 0a16b19b5e6022c41a16da8362fbc4e9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d035e6a293055fb429d2cd2f1b7950ab, type: 2}
     - target: {fileID: 4146760612406230670, guid: 0a16b19b5e6022c41a16da8362fbc4e9, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2084,7 +2093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5127723381543851306, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5133021722653363032, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
       propertyPath: m_RootOrder
