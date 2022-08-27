@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Wallrun : MonoBehaviour
 {
     [SerializeField] LayerMask WallRunLayer;
     [SerializeField] float WallDistance;
     [SerializeField] float wallRunJumpForce;
-    [SerializeField] Camera playerCamera;
+    [SerializeField] CinemachineVirtualCamera playerCamera;
     Rigidbody playerRigidbody;
     RaycastHit leftWallHit;
     RaycastHit rightWallHit;
@@ -106,7 +107,7 @@ public class Wallrun : MonoBehaviour
         float t = 0;
         while (t < Duration)
         {
-            playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, newFOV, t / Duration);
+            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, newFOV, t / Duration);
             yield return null;
             t += Time.deltaTime;
         }

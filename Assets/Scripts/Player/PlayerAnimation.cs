@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    public enum WeaponType
+    { 
+        Melee,Shoot
+    }
+    [SerializeField] WeaponType CurrentWeaponType;
     Animator CurrentAnimator;
-    [SerializeField] bool ShootingWeapon;
     private void Start()
     {
         CurrentAnimator = GetComponent<Animator>();
@@ -21,13 +25,18 @@ public class PlayerAnimation : MonoBehaviour
             CurrentAnimator.SetFloat("Speed", 0);
         }
 
-        if(Input.GetMouseButtonDown(0))
+
+        if(CurrentWeaponType==WeaponType.Melee)
         {
-            CurrentAnimator.SetTrigger("Primary");
+            if (Input.GetMouseButtonDown(0))
+            {
+                CurrentAnimator.SetTrigger("Primary");
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                CurrentAnimator.SetTrigger("Secondary");
+            }
         }
-        if (Input.GetMouseButtonDown(1))
-        {
-            CurrentAnimator.SetTrigger("Secondary");
-        }
+       
     }
 }

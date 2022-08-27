@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     CharacterController controller;
     [SerializeField] float walkSpeed;
     [SerializeField] float SprintSpeed;
+    [SerializeField] float SpeedMultiplier;
     public bool GrappleMode;
 
     //rotation
@@ -67,14 +68,30 @@ public class Player : MonoBehaviour
                 moveDirection.z = Input.GetAxis("Vertical");
 
                 if (moveDirection.z > 0 && Input.GetAxis("Sprint") > 0)
-                    speed = SprintSpeed;
+                {
+                    if (speed < SprintSpeed)
+                    {
+                        speed += Time.deltaTime;
+                    }
+                }
                 else if (moveDirection.magnitude > 0)
-                    speed = walkSpeed;
+                {
+                    if (speed < walkSpeed)
+                    {
+                        speed += Time.deltaTime;
+                    }
+                    else if (speed > walkSpeed + 0.1)
+                    {
+                        speed -= Time.deltaTime;
+                    }
+                }
                 else
-                    speed = 0;
-
+                {
+                    if (speed > 0)
+                        speed -= Time.deltaTime;
+                }
                 moveDirection.Normalize();
-                moveDirection *= speed;
+                moveDirection *= speed*SpeedMultiplier;
                 moveDirection = transform.TransformDirection(moveDirection);
 
                 playerRigidbody.velocity = moveDirection;
@@ -88,7 +105,8 @@ public class Player : MonoBehaviour
             }
             else
             {
-                speed = 0;
+                if (speed > 0)
+                    speed -= Time.deltaTime;
             }
         }
         

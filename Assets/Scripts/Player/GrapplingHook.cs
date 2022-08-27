@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GrapplingHook : MonoBehaviour
 {
     [SerializeField] LayerMask GrappleLayer;
-    [SerializeField] Camera playerCamera;
+    [SerializeField] CinemachineVirtualCamera playerCamera;
     [SerializeField] float MaxDistance;
     [SerializeField] Transform player;
     [SerializeField] Transform GrappleTip;
+    [SerializeField] Rigidbody playerRigidbody;
+    [SerializeField] float jumpForce;
 
     LineRenderer lineR;
     Vector3 GrapplePoint;
@@ -39,8 +42,12 @@ public class GrapplingHook : MonoBehaviour
     {
         if (GrappleMode)
         {
-            transform.LookAt(GrapplePoint);
+           // transform.transform.LookAt(GrapplePoint);
             DrawRope();
+            if(Input.GetKey(KeyCode.Space))
+            {
+                playerRigidbody.AddForce(player.transform.up * jumpForce, ForceMode.VelocityChange);
+            }
         }
         
             
@@ -79,7 +86,7 @@ public class GrapplingHook : MonoBehaviour
         lineR.positionCount = 0;
         GrappleMode = false;
         Player.playerInstance.GrappleMode = false;
-        transform.localRotation = Quaternion.Euler(0, 0, 0);
+        //transform.localRotation = Quaternion.Euler(0, 0, 0);
         Destroy(joint);
     }
 }
