@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     bool MovementEnabled = true;
     public bool Grounded;
     [SerializeField] float JumpForce;
+    [SerializeField] float GrappleMoveForce;
     CharacterController controller;
     [SerializeField] float walkSpeed;
     [SerializeField] float SprintSpeed;
@@ -57,7 +58,10 @@ public class Player : MonoBehaviour
                 moveDirection.x = Input.GetAxis("Horizontal");
                 moveDirection.z = Input.GetAxis("Vertical");
                 moveDirection = cameraTransform.TransformDirection(moveDirection);
-                playerRigidbody.AddForce(moveDirection);
+                moveDirection.Normalize();
+                playerRigidbody.AddForce(moveDirection*GrappleMoveForce,ForceMode.Acceleration);
+                if (speed > 0)
+                    speed -= Time.deltaTime;
             }
 
             else if (Grounded || Wallrun.WallRunInstance.WallRunMode)
@@ -74,7 +78,7 @@ public class Player : MonoBehaviour
                         speed += Time.deltaTime;
                     }
                 }
-                else if (moveDirection.magnitude > 0)
+                else if (moveDirection.x != 0 || moveDirection.z != 0)
                 {
                     if (speed < walkSpeed)
                     {
@@ -91,7 +95,8 @@ public class Player : MonoBehaviour
                         speed -= Time.deltaTime;
                 }
                 moveDirection.Normalize();
-                moveDirection *= speed*SpeedMultiplier;
+                moveDirection.x *= speed*SpeedMultiplier;
+                moveDirection.z *= speed * SpeedMultiplier;
                 moveDirection = transform.TransformDirection(moveDirection);
 
                 playerRigidbody.velocity = moveDirection;
