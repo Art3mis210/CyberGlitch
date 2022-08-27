@@ -17,6 +17,13 @@ public class PlayerAnimation : MonoBehaviour
     {
         CurrentAnimator = GetComponent<Animator>();
     }
+    private void OnEnable()
+    {
+        if(CurrentAnimator!=null)
+        {
+            CurrentAnimator.Rebind();
+        }
+    }
     void Update()
     {
         CurrentAnimator.SetFloat("Speed", Player.playerInstance.speed);
@@ -71,11 +78,15 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetTrigger("Reload");
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            CurrentAnimator.SetTrigger("Hide");
-        }
-
+    }
+    public void HideWeapon()
+    {
+        CurrentAnimator.SetTrigger("Hide");
+    }
+    public void DisableWeapon()
+    {
+        Player.playerInstance.NextWeapon.gameObject.SetActive(true);
+        Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
+         gameObject.SetActive(false);
     }
 }

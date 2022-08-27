@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
         set;
     }
 
-
     //movement
     public float speed;
     bool MovementEnabled = true;
@@ -31,16 +30,27 @@ public class Player : MonoBehaviour
     float CameraRotation = 0;
     bool RotationEnabled = true;
 
-    //Physcis
+    //Physics
     Rigidbody playerRigidbody;
-
     public Vector3 moveDirection;
+
+    //player Hands and Weapons
+    [SerializeField] PlayerAnimation[] playerHandsWeapons;
+    [SerializeField] KeyCode[] WeaponKeybinds;
+    public PlayerAnimation CurrentWeapon;
+    public PlayerAnimation NextWeapon;
+
+    //Health
+    public int Health=100;
+    public int BulletDamage = 10;
+
     private void Start()
     {
         playerInstance = this;
         playerRigidbody = GetComponent<Rigidbody>();
         moveDirection = Vector3.zero;
         controller = GetComponent<CharacterController>();
+        playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);
         
     }
     // Update is called once per frame
@@ -48,6 +58,7 @@ public class Player : MonoBehaviour
     {
         Movement();
         PlayerRotate();
+        WeaponChange();
     }
     void Movement()
     {
@@ -100,13 +111,13 @@ public class Player : MonoBehaviour
                 moveDirection = transform.TransformDirection(moveDirection);
 
                 playerRigidbody.velocity = moveDirection;
-
-                if (Input.GetKey(KeyCode.Space))
+                if (!Wallrun.WallRunInstance.WallRunMode)
                 {
-                    playerRigidbody.AddForce((transform.up * JumpForce), ForceMode.VelocityChange);
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        playerRigidbody.AddForce((transform.up * JumpForce), ForceMode.VelocityChange);
+                    }
                 }
-
-
             }
             else
             {
@@ -115,6 +126,25 @@ public class Player : MonoBehaviour
             }
         }
         
+    }
+    void WeaponChange()
+    {
+        for(int i=0;i<WeaponKeybinds.Length;i++)
+        {
+            if(Input.GetKey(WeaponKeybinds[i]))
+            {
+                if (CurrentWeapon != playerHandsWeapons[i])
+                {
+                    if (CurrentWeapon != null)
+                    {
+                        CurrentWeapon.HideWeapon();
+                        NextWeapon = playerHandsWeapons[i];
+                        
+                    }
+                    
+                }
+            }
+        }
     }
     void PlayerRotate()
     {
@@ -127,12 +157,20 @@ public class Player : MonoBehaviour
             cameraTransform.localRotation = Quaternion.Euler(-CameraRotation, cameraTransform.localRotation.eulerAngles.y, cameraTransform.localRotation.eulerAngles.z);
         }
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "bullet")
+        {
+            Health -= BulletDamage;
+        }
+    }
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
             Grounded = true;
         }
+        
     }
     private void OnCollisionExit(Collision collision)
     {
