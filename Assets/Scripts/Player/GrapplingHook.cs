@@ -27,35 +27,30 @@ public class GrapplingHook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if(Input.GetMouseButtonDown(0))
+        if (GrappleMode)
         {
-            StartGrapple();
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            if(GrappleMode)
+            if (Input.GetKey(KeyCode.Space))
+            {
+                playerRigidbody.AddForce(player.transform.up * jumpForce, ForceMode.VelocityChange);
                 EndGrapple();
+            }
         }
     }
     private void LateUpdate()
     {
         if (GrappleMode)
         {
-           // transform.transform.LookAt(GrapplePoint);
             DrawRope();
-            if(Input.GetKey(KeyCode.Space))
-            {
-                playerRigidbody.AddForce(player.transform.up * jumpForce, ForceMode.VelocityChange);
-            }
         }
         
             
     }
-    void StartGrapple()
+    public void StartGrapple()
     {
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward,out hit,MaxDistance,GrappleLayer))
         {
+            if (joint != null)
+                Destroy(joint);
             GrapplePoint = hit.point;
             joint=player.gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
@@ -86,7 +81,10 @@ public class GrapplingHook : MonoBehaviour
         lineR.positionCount = 0;
         GrappleMode = false;
         Player.playerInstance.GrappleMode = false;
-        //transform.localRotation = Quaternion.Euler(0, 0, 0);
         Destroy(joint);
+    }
+    private void OnDisable()
+    {
+        EndGrapple();
     }
 }

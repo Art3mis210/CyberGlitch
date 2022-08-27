@@ -9,6 +9,9 @@ public class PlayerAnimation : MonoBehaviour
         Melee,Shoot
     }
     [SerializeField] WeaponType CurrentWeaponType;
+    [SerializeField] float Ammo;
+    [SerializeField] float MagSize;
+    [SerializeField] float CurrentMag;
     Animator CurrentAnimator;
     private void Start()
     {
@@ -16,14 +19,15 @@ public class PlayerAnimation : MonoBehaviour
     }
     void Update()
     {
-        if(Player.playerInstance.Grounded ||  Wallrun.WallRunInstance.WallRunMode)
+        CurrentAnimator.SetFloat("Speed", Player.playerInstance.speed);
+       /* if (Player.playerInstance.Grounded ||  Wallrun.WallRunInstance.WallRunMode)
         { 
-            CurrentAnimator.SetFloat("Speed", Player.playerInstance.speed);
+           
         }
         else
         {
             CurrentAnimator.SetFloat("Speed", 0);
-        }
+        }*/
 
 
         if(CurrentWeaponType==WeaponType.Melee)
@@ -37,6 +41,26 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetTrigger("Secondary");
             }
         }
-       
+        else if(CurrentWeaponType == WeaponType.Shoot)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                CurrentAnimator.SetTrigger("Primary");
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                CurrentAnimator.SetBool("Aim", !CurrentAnimator.GetBool("Aim"));
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                CurrentAnimator.SetTrigger("Reload");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            CurrentAnimator.SetTrigger("Hide");
+        }
+
     }
 }
