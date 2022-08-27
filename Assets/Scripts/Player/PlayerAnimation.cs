@@ -6,7 +6,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     public enum WeaponType
     { 
-        Melee,Shoot
+        Melee,SingleShotGun,AutomaticGun
     }
     [SerializeField] WeaponType CurrentWeaponType;
     [SerializeField] float Ammo;
@@ -16,6 +16,13 @@ public class PlayerAnimation : MonoBehaviour
     private void Start()
     {
         CurrentAnimator = GetComponent<Animator>();
+    }
+    private void OnEnable()
+    {
+        if(CurrentAnimator!=null)
+        {
+            CurrentAnimator.Rebind();
+        }
     }
     void Update()
     {
@@ -32,6 +39,7 @@ public class PlayerAnimation : MonoBehaviour
 
         if(CurrentWeaponType==WeaponType.Melee)
         {
+            
             if (Input.GetMouseButtonDown(0))
             {
                 CurrentAnimator.SetTrigger("Primary");
@@ -41,11 +49,25 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetTrigger("Secondary");
             }
         }
-        else if(CurrentWeaponType == WeaponType.Shoot)
+        else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (CurrentWeaponType == WeaponType.SingleShotGun)
             {
-                CurrentAnimator.SetTrigger("Primary");
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CurrentAnimator.SetTrigger("Primary");
+                }
+            }
+            else
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    CurrentAnimator.SetBool("Primary", true);
+                }
+                else
+                {
+                    CurrentAnimator.SetBool("Primary", false);
+                }
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -56,11 +78,15 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetTrigger("Reload");
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            CurrentAnimator.SetTrigger("Hide");
-        }
-
+    }
+    public void HideWeapon()
+    {
+        CurrentAnimator.SetTrigger("Hide");
+    }
+    public void DisableWeapon()
+    {
+        Player.playerInstance.NextWeapon.gameObject.SetActive(true);
+        Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
+         gameObject.SetActive(false);
     }
 }
