@@ -6,7 +6,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     public enum WeaponType
     { 
-        Melee,Shoot
+        Melee,SingleShotGun,AutomaticGun
     }
     [SerializeField] WeaponType CurrentWeaponType;
     [SerializeField] float Ammo;
@@ -32,6 +32,7 @@ public class PlayerAnimation : MonoBehaviour
 
         if(CurrentWeaponType==WeaponType.Melee)
         {
+            
             if (Input.GetMouseButtonDown(0))
             {
                 CurrentAnimator.SetTrigger("Primary");
@@ -41,11 +42,25 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetTrigger("Secondary");
             }
         }
-        else if(CurrentWeaponType == WeaponType.Shoot)
+        else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (CurrentWeaponType == WeaponType.SingleShotGun)
             {
-                CurrentAnimator.SetTrigger("Primary");
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CurrentAnimator.SetTrigger("Primary");
+                }
+            }
+            else
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    CurrentAnimator.SetBool("Primary", true);
+                }
+                else
+                {
+                    CurrentAnimator.SetBool("Primary", false);
+                }
             }
             if (Input.GetMouseButtonDown(1))
             {

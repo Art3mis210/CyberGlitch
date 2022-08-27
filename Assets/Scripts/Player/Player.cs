@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Space))
                 {
-                    playerRigidbody.AddForce(transform.up * JumpForce, ForceMode.VelocityChange);
+                    playerRigidbody.AddForce((transform.up * JumpForce), ForceMode.VelocityChange);
                 }
 
 
