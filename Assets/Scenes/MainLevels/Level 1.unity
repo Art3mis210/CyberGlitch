@@ -5308,12 +5308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83487915ac92f184a8d9a6a90ad996d8, type: 3}
---- !u!4 &184477830 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5045879057799842446, guid: c38ca031879e8634984460aff9d78f4d, type: 3}
-  m_PrefabInstance: {fileID: 1319365898}
-  m_PrefabAsset: {fileID: 0}
---- !u!21 &184957801
+--- !u!21 &177327919
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5397,6 +5392,11 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
+--- !u!4 &184477830 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5045879057799842446, guid: c38ca031879e8634984460aff9d78f4d, type: 3}
+  m_PrefabInstance: {fileID: 1319365898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &190993077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11443,14 +11443,14 @@ MonoBehaviour:
   Ammo: 0
   MagSize: 0
   CurrentMag: 0
-  WeaponRange: 0
-  WeaponDamage: 0
+  WeaponRange: 100
+  WeaponDamage: 10
   WeaponParticleSystem: {fileID: 0}
   CurrentMagText: {fileID: 0}
   AmmoText: {fileID: 0}
   BulletDamageLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 961
 --- !u!120 &500529320
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -21511,7 +21511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 184957801}
+  m_Material: {fileID: 177327919}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -28401,6 +28401,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 84052277}
     m_Modifications:
+    - target: {fileID: 1127387280, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
+      propertyPath: WeaponRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127387280, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
+      propertyPath: WeaponDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127387280, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
+      propertyPath: BulletDamageLayer.m_Bits
+      value: 961
+      objectReference: {fileID: 0}
     - target: {fileID: 5077929457870101938, guid: aaf8c87321c24fd42962e06af204a6f4, type: 3}
       propertyPath: m_Controller
       value: 

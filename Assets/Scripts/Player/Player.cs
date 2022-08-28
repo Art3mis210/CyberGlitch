@@ -54,9 +54,7 @@ public class Player : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
         moveDirection = Vector3.zero;
         controller = GetComponent<CharacterController>();
-        playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);
-        Cursor.visible = false;
-        
+        playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);  
     }
     // Update is called once per frame
     void Update()
@@ -64,10 +62,6 @@ public class Player : MonoBehaviour
         Movement();
         PlayerRotate();
         WeaponChange();
-        if(Input.GetKey(KeyCode.P))
-            {
-            Death();
-        }
     }
     void Movement()
     {

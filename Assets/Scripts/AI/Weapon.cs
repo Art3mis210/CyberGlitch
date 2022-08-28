@@ -31,7 +31,7 @@ public class Weapon : MonoBehaviour
         S = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Shoot();
     }

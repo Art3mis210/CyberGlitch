@@ -14,7 +14,7 @@ public class LevelChange : MonoBehaviour
             if(!levelLoad)
             {
                 levelLoad = true;
-                if (!ReloadLevel)
+                if (ReloadLevel)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }
