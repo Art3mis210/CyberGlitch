@@ -14,12 +14,19 @@ public class LevelChange : MonoBehaviour
             if(!levelLoad)
             {
                 levelLoad = true;
-                if(!ReloadLevel)
+                if (!ReloadLevel)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }
                 else
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+                {
+                    if(SceneManager.GetActiveScene().name=="Level 5")
+                    {
+                        SceneManager.LoadScene("Lab");
+                    }
+                    else
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                }
             }
         }
     }

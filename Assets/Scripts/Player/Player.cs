@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
         moveDirection = Vector3.zero;
         controller = GetComponent<CharacterController>();
         playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);
+        Cursor.visible = false;
         
     }
     // Update is called once per frame
@@ -156,7 +157,7 @@ public class Player : MonoBehaviour
     }
     void PlayerRotate()
     {
-        if (RotationEnabled)
+        if (RotationEnabled && Time.timeScale!=0)
         {
             PlayerRotation += Input.GetAxisRaw("Mouse X") * CameraSensitivity;
             CameraRotation += Input.GetAxisRaw("Mouse Y") * CameraSensitivity;
