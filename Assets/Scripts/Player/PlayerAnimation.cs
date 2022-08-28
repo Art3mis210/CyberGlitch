@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -12,10 +13,19 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] float Ammo;
     [SerializeField] float MagSize;
     [SerializeField] float CurrentMag;
+    [SerializeField] float WeaponRange;
+    [SerializeField] float WeaponDamage;
+    [SerializeField] Transform WeaponParticleSystem;
+    [SerializeField] Text CurrentMagText;
+    [SerializeField] Text AmmoText;
+    AudioSource weaponSound;
+
     Animator CurrentAnimator;
+    RaycastHit hit;
     private void Start()
     {
         CurrentAnimator = GetComponent<Animator>();
+        weaponSound = GetComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -23,6 +33,9 @@ public class PlayerAnimation : MonoBehaviour
         {
             CurrentAnimator.Rebind();
         }
+        Reticle.ReticleReference.ReticleSprite.enabled = true;
+
+
     }
     void Update()
     {
@@ -53,7 +66,7 @@ public class PlayerAnimation : MonoBehaviour
         {
             if (CurrentWeaponType == WeaponType.SingleShotGun)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && CurrentMag>0)
                 {
                     CurrentAnimator.SetTrigger("Primary");
                 }
@@ -72,10 +85,20 @@ public class PlayerAnimation : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 CurrentAnimator.SetBool("Aim", !CurrentAnimator.GetBool("Aim"));
+                Reticle.ReticleReference.ReticleSprite.enabled = !CurrentAnimator.GetBool("Aim");
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) && Ammo > 0)
             {
                 CurrentAnimator.SetTrigger("Reload");
+                if (Ammo >= MagSize)
+                {
+                    CurrentMag = MagSize;
+                    Ammo -= MagSize;
+                }
+                else
+                    CurrentMag = Ammo;
+                AmmoText.text = Ammo.ToString();
+                CurrentMagText.text = CurrentMag.ToString();
             }
         }
     }
@@ -89,4 +112,29 @@ public class PlayerAnimation : MonoBehaviour
         Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
          gameObject.SetActive(false);
     }
+    public void Shoot()
+    {
+        if(WeaponParticleSystem!=null)
+        {
+            WeaponParticleSystem.gameObject.SetActive(true);
+            if(weaponSound!=null)
+            {
+                weaponSound.Play();
+            }
+        }
+        if(Physics.Raycast(transform.parent.position, transform.parent.forward,out hit,WeaponRange))
+        {
+            if(hit.transform.gameObject.tag=="enemy")
+            {
+                //hit.transform.gameObject.GetComponent<Enemy>().Health -= WeaponDamage;
+            }
+        }
+        CurrentMag--;
+        CurrentMagText.text = CurrentMag.ToString();
+    }
+    public void TurnParticleEffectOff()
+    {
+        WeaponParticleSystem.gameObject.SetActive(false);
+    }
+
 }

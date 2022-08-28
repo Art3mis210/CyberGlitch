@@ -11,7 +11,7 @@ public class Reticle : MonoBehaviour
         set;
     }
     public Image ReticleSprite;
-    private void Start()
+    private void Awake()
     {
         ReticleSprite = GetComponent<Image>();
         ReticleReference = this;
