@@ -26,6 +26,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         CurrentAnimator = GetComponent<Animator>();
         weaponSound = GetComponent<AudioSource>();
+        AmmoText.text = Ammo.ToString();
+        CurrentMagText.text = CurrentMag.ToString();
     }
     private void OnEnable()
     {
@@ -73,7 +75,7 @@ public class PlayerAnimation : MonoBehaviour
             }
             else
             {
-                if(Input.GetMouseButton(0))
+                if(Input.GetMouseButton(0) && CurrentMag >0)
                 {
                     CurrentAnimator.SetBool("Primary", true);
                 }
@@ -108,29 +110,35 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void DisableWeapon()
     {
-        Player.playerInstance.NextWeapon.gameObject.SetActive(true);
-        Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
-         gameObject.SetActive(false);
+        if (Player.playerInstance.NextWeapon != null)
+        {
+            Player.playerInstance.NextWeapon.gameObject.SetActive(true);
+            Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
+        }
+        gameObject.SetActive(false);
     }
     public void Shoot()
     {
-        if(WeaponParticleSystem!=null)
+        if (CurrentMag > 0)
         {
-            WeaponParticleSystem.gameObject.SetActive(true);
-            if(weaponSound!=null)
+            if (WeaponParticleSystem != null)
             {
-                weaponSound.Play();
+                WeaponParticleSystem.gameObject.SetActive(true);
+                if (weaponSound != null)
+                {
+                    weaponSound.Play();
+                }
             }
-        }
-        if(Physics.Raycast(transform.parent.position, transform.parent.forward,out hit,WeaponRange))
-        {
-            if(hit.transform.gameObject.tag=="enemy")
+            if (Physics.Raycast(transform.parent.position, transform.parent.forward, out hit, WeaponRange))
             {
-                //hit.transform.gameObject.GetComponent<Enemy>().Health -= WeaponDamage;
+                if (hit.transform.gameObject.tag == "enemy")
+                {
+                    //hit.transform.gameObject.GetComponent<Enemy>().Health -= WeaponDamage;
+                }
             }
+            CurrentMag--;
+            CurrentMagText.text = CurrentMag.ToString();
         }
-        CurrentMag--;
-        CurrentMagText.text = CurrentMag.ToString();
     }
     public void TurnParticleEffectOff()
     {

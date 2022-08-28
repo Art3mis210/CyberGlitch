@@ -60,6 +60,10 @@ public class Player : MonoBehaviour
         Movement();
         PlayerRotate();
         WeaponChange();
+        if(Input.GetKey(KeyCode.P))
+            {
+            Death();
+        }
     }
     void Movement()
     {
@@ -158,11 +162,16 @@ public class Player : MonoBehaviour
             cameraTransform.localRotation = Quaternion.Euler(-CameraRotation, cameraTransform.localRotation.eulerAngles.y, cameraTransform.localRotation.eulerAngles.z);
         }
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "bullet")
         {
             Health -= BulletDamage;
+            if(Health<=0)
+            {
+                Death();
+            }
+            
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -179,5 +188,30 @@ public class Player : MonoBehaviour
         {
             Grounded = false;
         }
+    }
+    void Death()
+    {
+        MovementEnabled = false;
+        RotationEnabled = false;
+        for(int i=0;i<UnlockedWeapons.Length;i++)
+        {
+            UnlockedWeapons[i] = false;
+        }
+        NextWeapon = null;
+        CurrentWeapon.HideWeapon();
+        StartCoroutine(FallingDown(5));
+       
+    }
+    IEnumerator FallingDown(float Duration)
+    {
+        float t = 0;
+        while(t<Duration)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(-90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z), t/Duration);
+            t += Time.deltaTime;
+            yield return null;
+            
+        }
+       
     }
 }
