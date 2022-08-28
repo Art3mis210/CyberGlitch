@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
         {
             PlayerRotation += Input.GetAxisRaw("Mouse X") * CameraSensitivity;
             CameraRotation += Input.GetAxisRaw("Mouse Y") * CameraSensitivity;
-            CameraRotation = Mathf.Clamp(CameraRotation, -90f, 30f);
+            CameraRotation = Mathf.Clamp(CameraRotation, -90f, 60f);
             transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, PlayerRotation, transform.localRotation.eulerAngles.z);
             cameraTransform.localRotation = Quaternion.Euler(-CameraRotation, cameraTransform.localRotation.eulerAngles.y, cameraTransform.localRotation.eulerAngles.z);
         }
