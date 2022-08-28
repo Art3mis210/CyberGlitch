@@ -153,8 +153,9 @@ public class Player : MonoBehaviour
     {
         if (RotationEnabled && Time.timeScale!=0)
         {
-            PlayerRotation += Input.GetAxisRaw("Mouse X") * CameraSensitivity;
-            CameraRotation += Input.GetAxisRaw("Mouse Y") * CameraSensitivity;
+            if(Input.GetAxisRaw("Mouse X")!=0 || Input.GetAxisRaw("Mouse Y") != 0)
+            PlayerRotation += Input.GetAxis("Mouse X") * CameraSensitivity;
+            CameraRotation += Input.GetAxis("Mouse Y") * CameraSensitivity;
             CameraRotation = Mathf.Clamp(CameraRotation, -90f, 60f);
             transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, PlayerRotation, transform.localRotation.eulerAngles.z);
             cameraTransform.localRotation = Quaternion.Euler(-CameraRotation, cameraTransform.localRotation.eulerAngles.y, cameraTransform.localRotation.eulerAngles.z);
