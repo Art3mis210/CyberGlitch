@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RengeGames.HealthBars;
 
 public class Player : MonoBehaviour
 {
@@ -42,8 +43,9 @@ public class Player : MonoBehaviour
     public PlayerAnimation NextWeapon;
 
     //Health
-    public int Health=100;
-    public int BulletDamage = 10;
+    public float Health=3;
+    public float BulletDamage = 0.1f;
+    [SerializeField] UltimateCircularHealthBar healthBar;
 
     private void Start()
     {
@@ -167,6 +169,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "bullet")
         {
             Health -= BulletDamage;
+            healthBar.SetRemovedSegments(healthBar.RemovedSegments + BulletDamage);
             if(Health<=0)
             {
                 Death();
@@ -210,8 +213,6 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(-90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z), t/Duration);
             t += Time.deltaTime;
             yield return null;
-            
         }
-       
     }
 }

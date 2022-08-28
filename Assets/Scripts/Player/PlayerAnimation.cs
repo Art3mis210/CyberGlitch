@@ -14,7 +14,7 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] float MagSize;
     [SerializeField] float CurrentMag;
     [SerializeField] float WeaponRange;
-    [SerializeField] float WeaponDamage;
+    [SerializeField] int WeaponDamage;
     [SerializeField] Transform WeaponParticleSystem;
     [SerializeField] Text CurrentMagText;
     [SerializeField] Text AmmoText;
@@ -26,8 +26,10 @@ public class PlayerAnimation : MonoBehaviour
     {
         CurrentAnimator = GetComponent<Animator>();
         weaponSound = GetComponent<AudioSource>();
-        AmmoText.text = Ammo.ToString();
-        CurrentMagText.text = CurrentMag.ToString();
+        if(AmmoText != null)
+            AmmoText.text = Ammo.ToString();
+        if(CurrentMagText != null)
+            CurrentMagText.text = CurrentMag.ToString();
     }
     private void OnEnable()
     {
@@ -89,7 +91,7 @@ public class PlayerAnimation : MonoBehaviour
                 CurrentAnimator.SetBool("Aim", !CurrentAnimator.GetBool("Aim"));
                 Reticle.ReticleReference.ReticleSprite.enabled = !CurrentAnimator.GetBool("Aim");
             }
-            if (Input.GetKeyDown(KeyCode.R) && Ammo > 0)
+            if (Input.GetKeyDown(KeyCode.R) && Ammo > 0 && CurrentMag<MagSize)
             {
                 CurrentAnimator.SetTrigger("Reload");
                 if (Ammo >= MagSize)
@@ -133,7 +135,7 @@ public class PlayerAnimation : MonoBehaviour
             {
                 if (hit.transform.gameObject.tag == "enemy")
                 {
-                    //hit.transform.gameObject.GetComponent<Enemy>().Health -= WeaponDamage;
+                    hit.transform.gameObject.GetComponent<AIHealthSystem>().health -= WeaponDamage;
                 }
             }
             CurrentMag--;
