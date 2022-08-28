@@ -81,12 +81,9 @@ public class GrapplingHook : MonoBehaviour
         lineR.positionCount = 0;
         GrappleMode = false;
         Player.playerInstance.GrappleMode = false;
-<<<<<<< Updated upstream
         Destroy(joint);
-=======
         if (joint != null)
-        joint.spring = 0;
->>>>>>> Stashed changes
+            joint.spring = 0;
     }
     private void OnDisable()
     {
