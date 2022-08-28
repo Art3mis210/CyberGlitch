@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelChange : MonoBehaviour
 {
-    [SerializeField] int LevelNumber;
+    [SerializeField] bool ReloadLevel;
     bool levelLoad;
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +14,12 @@ public class LevelChange : MonoBehaviour
             if(!levelLoad)
             {
                 levelLoad = true;
-                SceneManager.LoadScene(LevelNumber);
+                if(!ReloadLevel)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+                else
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
             }
         }
     }
