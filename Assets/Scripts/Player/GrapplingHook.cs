@@ -49,9 +49,10 @@ public class GrapplingHook : MonoBehaviour
     {
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward,out hit,MaxDistance,GrappleLayer))
         {
-            if (joint == null)
-                joint = player.gameObject.AddComponent<SpringJoint>();
+            if (joint != null)
+                Destroy(joint);
             GrapplePoint = hit.point;
+            joint=player.gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
             joint.connectedAnchor = GrapplePoint;
 
@@ -80,7 +81,9 @@ public class GrapplingHook : MonoBehaviour
         lineR.positionCount = 0;
         GrappleMode = false;
         Player.playerInstance.GrappleMode = false;
-        joint.spring = 0;
+        Destroy(joint);
+        if (joint != null)
+            joint.spring = 0;
     }
     private void OnDisable()
     {

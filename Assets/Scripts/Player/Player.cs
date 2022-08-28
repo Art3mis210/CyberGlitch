@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     //player Hands and Weapons
     [SerializeField] PlayerAnimation[] playerHandsWeapons;
     [SerializeField] KeyCode[] WeaponKeybinds;
+    public bool[] UnlockedWeapons;
     public PlayerAnimation CurrentWeapon;
     public PlayerAnimation NextWeapon;
 
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour
     {
         for(int i=0;i<WeaponKeybinds.Length;i++)
         {
-            if(Input.GetKey(WeaponKeybinds[i]))
+            if(Input.GetKey(WeaponKeybinds[i]) && UnlockedWeapons[i])
             {
                 if (CurrentWeapon != playerHandsWeapons[i])
                 {

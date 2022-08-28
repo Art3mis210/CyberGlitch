@@ -13,6 +13,7 @@ public class LevelChange : MonoBehaviour
         {
             if(!levelLoad)
             {
+                levelLoad = true;
                 SceneManager.LoadScene(LevelNumber);
             }
         }
