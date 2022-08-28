@@ -1604,9 +1604,9 @@ GameObject:
   - component: {fileID: 8781002753445937742}
   - component: {fileID: 638279957}
   - component: {fileID: 8357239190188374921}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Humanbot_A_Geom
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1769,7 +1769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3703158828812953926}
   anim: {fileID: 4363763161050548832}
-  health: 0
+  health: 1
 --- !u!1 &3935479815439273720
 GameObject:
   m_ObjectHideFlags: 0
