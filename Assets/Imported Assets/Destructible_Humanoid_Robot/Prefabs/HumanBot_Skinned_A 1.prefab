@@ -1603,6 +1603,7 @@ GameObject:
   - component: {fileID: 5057416436857191007}
   - component: {fileID: 8781002753445937742}
   - component: {fileID: 638279957}
+  - component: {fileID: 8357239190188374921}
   m_Layer: 0
   m_Name: Humanbot_A_Geom
   m_TagString: Untagged
@@ -1754,6 +1755,21 @@ CapsuleCollider:
   m_Height: 186.57536
   m_Direction: 1
   m_Center: {x: 0, y: 93.1486, z: 3}
+--- !u!114 &8357239190188374921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794200414231752328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b07de9aee6617b43aaac2febefd0038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 3703158828812953926}
+  anim: {fileID: 4363763161050548832}
+  health: 0
 --- !u!1 &3935479815439273720
 GameObject:
   m_ObjectHideFlags: 0
