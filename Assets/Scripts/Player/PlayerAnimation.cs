@@ -123,7 +123,19 @@ public class PlayerAnimation : MonoBehaviour
     }
     public void Shoot()
     {
-        if (CurrentMag > 0)
+        if(CurrentWeaponType==WeaponType.Melee)
+        {
+            if (Physics.Raycast(transform.parent.position, transform.parent.forward, out hit, WeaponRange, BulletDamageLayer))
+            {
+                if (hit.transform.gameObject.tag == "enemy")
+                {
+
+                    hit.transform.gameObject.GetComponent<AIHealthSystem>().health -= WeaponDamage;
+                    Debug.Log(hit.transform.gameObject.GetComponent<AIHealthSystem>().health -= WeaponDamage);
+                }
+            }
+        }
+        else if (CurrentMag > 0)
         {
             if (WeaponParticleSystem != null)
             {
