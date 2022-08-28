@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIHealthSystem : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class AIHealthSystem : MonoBehaviour
             parent.GetComponent<CrowdBot>().enabled = false;
             parent.GetComponent<PlayerDetection>().enabled = false;
             parent.GetComponent<Weapon>().enabled = false;
+            parent.GetComponent<NavMeshAgent>().isStopped = true;
         }
 
         if (anim.GetBool("death") == true)

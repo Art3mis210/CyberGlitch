@@ -18,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] Transform WeaponParticleSystem;
     [SerializeField] Text CurrentMagText;
     [SerializeField] Text AmmoText;
+    [SerializeField] LayerMask BulletDamageLayer;
     AudioSource weaponSound;
 
     Animator CurrentAnimator;
@@ -37,7 +38,8 @@ public class PlayerAnimation : MonoBehaviour
         {
             CurrentAnimator.Rebind();
         }
-        Reticle.ReticleReference.ReticleSprite.enabled = true;
+        if(Reticle.ReticleReference!=null)
+            Reticle.ReticleReference.ReticleSprite.enabled = true;
 
 
     }
@@ -131,11 +133,13 @@ public class PlayerAnimation : MonoBehaviour
                     weaponSound.Play();
                 }
             }
-            if (Physics.Raycast(transform.parent.position, transform.parent.forward, out hit, WeaponRange))
+            if (Physics.Raycast(transform.parent.position, transform.parent.forward, out hit, WeaponRange,BulletDamageLayer))
             {
                 if (hit.transform.gameObject.tag == "enemy")
                 {
+                    
                     hit.transform.gameObject.GetComponent<AIHealthSystem>().health -= WeaponDamage;
+                    Debug.Log(hit.transform.gameObject.GetComponent<AIHealthSystem>().health -= WeaponDamage);
                 }
             }
             CurrentMag--;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RengeGames.HealthBars;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -168,6 +169,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "bullet")
         {
+            Destroy(collision.gameObject);
             Health -= BulletDamage;
             healthBar.SetRemovedSegments(healthBar.RemovedSegments + BulletDamage);
             if(Health<=0)
@@ -214,5 +216,6 @@ public class Player : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
