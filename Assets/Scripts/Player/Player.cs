@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     [SerializeField] float CameraSensitivity;
     float PlayerRotation = 0;
     float CameraRotation = 0;
-    bool RotationEnabled = true;
+    bool RotationEnabled = false;
 
     //Physics
     Rigidbody playerRigidbody;
@@ -50,18 +50,38 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = -1;
         playerInstance = this;
         playerRigidbody = GetComponent<Rigidbody>();
         moveDirection = Vector3.zero;
         controller = GetComponent<CharacterController>();
-        playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);  
+        playerHandsWeapons = GetComponentsInChildren<PlayerAnimation>(true);
+        PlayerRotation = transform.localRotation.eulerAngles.y;
     }
     // Update is called once per frame
     void Update()
     {
-        Movement();
+       // Movement();
         PlayerRotate();
         WeaponChange();
+    }
+    private void FixedUpdate()
+    {
+        Movement();
+        Jump();
+    }
+    void Jump()
+    {
+        if (MovementEnabled)
+        {
+            if (Grounded && !Wallrun.WallRunInstance.WallRunMode)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    playerRigidbody.AddForce((transform.up * JumpForce), ForceMode.VelocityChange);
+                }
+            }
+        }
     }
     void Movement()
     {
@@ -87,6 +107,8 @@ public class Player : MonoBehaviour
 
                 if (moveDirection.z > 0 && Input.GetAxis("Sprint") > 0)
                 {
+                    if (!RotationEnabled)
+                        RotationEnabled = true;
                     if (speed < SprintSpeed)
                     {
                         speed += Time.deltaTime;
@@ -94,6 +116,8 @@ public class Player : MonoBehaviour
                 }
                 else if (moveDirection.x != 0 || moveDirection.z != 0)
                 {
+                    if (!RotationEnabled)
+                        RotationEnabled = true;
                     if (speed < walkSpeed)
                     {
                         speed += Time.deltaTime;
@@ -114,13 +138,7 @@ public class Player : MonoBehaviour
                 moveDirection = transform.TransformDirection(moveDirection);
 
                 playerRigidbody.velocity = moveDirection;
-                if (!Wallrun.WallRunInstance.WallRunMode)
-                {
-                    if (Input.GetKey(KeyCode.Space))
-                    {
-                        playerRigidbody.AddForce((transform.up * JumpForce), ForceMode.VelocityChange);
-                    }
-                }
+                
             }
             else
             {
@@ -153,7 +171,6 @@ public class Player : MonoBehaviour
     {
         if (RotationEnabled && Time.timeScale!=0)
         {
-            if(Input.GetAxisRaw("Mouse X")!=0 || Input.GetAxisRaw("Mouse Y") != 0)
             PlayerRotation += Input.GetAxis("Mouse X") * CameraSensitivity;
             CameraRotation += Input.GetAxis("Mouse Y") * CameraSensitivity;
             CameraRotation = Mathf.Clamp(CameraRotation, -90f, 60f);
@@ -205,6 +222,7 @@ public class Player : MonoBehaviour
     }
     IEnumerator FallingDown(float Duration)
     {
+        playerRigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         float t = 0;
         while(t<Duration)
         {

@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour
         GameObject newBullet = (GameObject)Instantiate(Bullet, Muzzle.transform.position, transform.rotation);
         Instantiate(muzzleflash, muzzlespawn.position, muzzlespawn.rotation);
         newBullet.GetComponent<Rigidbody>().AddForce(1000 * transform.forward);
-        shootsound.PlayOneShot(clip);
+       // shootsound.PlayOneShot(clip);
         yield return new WaitForSeconds(FireRate);
         CanFire = true;
     }

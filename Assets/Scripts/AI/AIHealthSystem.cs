@@ -26,6 +26,7 @@ public class AIHealthSystem : MonoBehaviour
             parent.GetComponent<PlayerDetection>().enabled = false;
             parent.GetComponent<Weapon>().enabled = false;
             parent.GetComponent<NavMeshAgent>().isStopped = true;
+            Physics.IgnoreCollision(transform.GetComponent<CapsuleCollider>(), Player.playerInstance.GetComponent<CapsuleCollider>());
         }
 
         if (anim.GetBool("death") == true)

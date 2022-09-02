@@ -48,6 +48,20 @@ public class Wallrun : MonoBehaviour
             StopWallRun();
         }
     }
+    private void FixedUpdate()
+    {
+        if(WallRunMode)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (leftWall)
+                    wallRunJumpDirection = transform.up + leftWallHit.normal;
+                else if (rightWall)
+                    wallRunJumpDirection = transform.up + rightWallHit.normal;
+                playerRigidbody.AddForce(wallRunJumpDirection * wallRunJumpForce, ForceMode.VelocityChange);
+            }
+        }
+    }
     void CheckWallRun()
     {
         leftWall = Physics.Raycast(transform.position, transform.right, out leftWallHit, WallDistance, WallRunLayer);
@@ -72,14 +86,7 @@ public class Wallrun : MonoBehaviour
             StartCoroutine(ChangeCamFOV(70, 2f));
         }
         WallRunMode = true;
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (leftWall)
-                wallRunJumpDirection = transform.up + leftWallHit.normal;
-            else if (rightWall)
-                wallRunJumpDirection = transform.up + rightWallHit.normal;
-            playerRigidbody.AddForce(wallRunJumpDirection * wallRunJumpForce, ForceMode.VelocityChange);
-        }
+       
     }
     void StopWallRun()
     {

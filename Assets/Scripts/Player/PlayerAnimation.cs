@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class PlayerAnimation : MonoBehaviour
 {
     public enum WeaponType
-    { 
-        Melee,SingleShotGun,AutomaticGun
+    {
+        Melee, GrapplingHook, SingleShotGun, AutomaticGun
     }
     [SerializeField] WeaponType CurrentWeaponType;
     [SerializeField] float Ammo;
@@ -19,6 +20,14 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] Text CurrentMagText;
     [SerializeField] Text AmmoText;
     [SerializeField] LayerMask BulletDamageLayer;
+    [SerializeField] float AimHeight;
+    float IdleHeight;
+    [SerializeField] float AimDistance;
+    float IdleDistance;
+    bool Aim;
+    [SerializeField] bool Scope;
+    [SerializeField] GameObject ScopeComponents;
+
     AudioSource weaponSound;
 
     Animator CurrentAnimator;
@@ -27,36 +36,22 @@ public class PlayerAnimation : MonoBehaviour
     {
         CurrentAnimator = GetComponent<Animator>();
         weaponSound = GetComponent<AudioSource>();
-        if(AmmoText != null)
+        if (AmmoText != null)
             AmmoText.text = Ammo.ToString();
-        if(CurrentMagText != null)
+        if (CurrentMagText != null)
             CurrentMagText.text = CurrentMag.ToString();
+        IdleHeight = transform.localPosition.y;
+        IdleDistance= transform.localPosition.z;
     }
     private void OnEnable()
     {
-        if(CurrentAnimator!=null)
-        {
-            CurrentAnimator.Rebind();
-        }
-        if(Reticle.ReticleReference!=null)
+        if (Reticle.ReticleReference != null)
             Reticle.ReticleReference.ReticleSprite.enabled = true;
-
-
     }
     void Update()
     {
         CurrentAnimator.SetFloat("Speed", Player.playerInstance.speed);
-       /* if (Player.playerInstance.Grounded ||  Wallrun.WallRunInstance.WallRunMode)
-        { 
-           
-        }
-        else
-        {
-            CurrentAnimator.SetFloat("Speed", 0);
-        }*/
-
-
-        if(CurrentWeaponType==WeaponType.Melee)
+        if (CurrentWeaponType == WeaponType.Melee || CurrentWeaponType == WeaponType.GrapplingHook)
         {
             
             if (Input.GetMouseButtonDown(0))
@@ -66,6 +61,20 @@ public class PlayerAnimation : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 CurrentAnimator.SetTrigger("Secondary");
+                if(CurrentWeaponType == WeaponType.GrapplingHook)
+                {
+                    Aim = !Aim;
+                    if(Aim)
+                    {
+                        StopAllCoroutines();
+                        StartCoroutine(AimPose(true, 2f));
+                    }
+                    else
+                    {
+                        StopAllCoroutines();
+                        StartCoroutine(AimPose(false, 2f));
+                    }
+                }
             }
         }
         else
@@ -92,6 +101,21 @@ public class PlayerAnimation : MonoBehaviour
             {
                 CurrentAnimator.SetBool("Aim", !CurrentAnimator.GetBool("Aim"));
                 Reticle.ReticleReference.ReticleSprite.enabled = !CurrentAnimator.GetBool("Aim");
+                if (Scope)
+                {
+                    ScopeComponents.SetActive(CurrentAnimator.GetBool("Aim"));
+                }
+                if (CurrentAnimator.GetBool("Aim"))
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(AimPose(true, 2f));
+                    
+                }
+                else
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(AimPose(false, 2f));
+                }
             }
             if (Input.GetKeyDown(KeyCode.R) && Ammo > 0 && CurrentMag<MagSize)
             {
@@ -116,6 +140,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (Player.playerInstance.NextWeapon != null)
         {
+            Player.playerInstance.NextWeapon.GetComponent<Animator>().Rebind();
             Player.playerInstance.NextWeapon.gameObject.SetActive(true);
             Player.playerInstance.CurrentWeapon = Player.playerInstance.NextWeapon;
         }
@@ -162,5 +187,18 @@ public class PlayerAnimation : MonoBehaviour
     {
         WeaponParticleSystem.gameObject.SetActive(false);
     }
+    IEnumerator AimPose(bool Status,float Duration)
+    {
+
+        float t = 0;
+        while(t<Duration)
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(0, Status ? AimHeight:IdleHeight, Status ? AimDistance : IdleDistance), t/Duration);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        
+    }
+   
 
 }
