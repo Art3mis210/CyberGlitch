@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     //movement
     public float speed;
-    bool MovementEnabled = true;
+    public bool MovementEnabled = true;
     public bool Grounded;
     [SerializeField] float JumpForce;
     [SerializeField] float GrappleMoveForce;
