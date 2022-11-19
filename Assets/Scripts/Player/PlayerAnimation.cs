@@ -8,7 +8,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     public enum WeaponType
     {
-        Melee, GrapplingHook, SingleShotGun, AutomaticGun
+        Melee, GrapplingHook, SingleShotGun, AutomaticGun           
     }
     [SerializeField] WeaponType CurrentWeaponType;
     [SerializeField] float Ammo;
@@ -48,10 +48,10 @@ public class PlayerAnimation : MonoBehaviour
         if (Reticle.ReticleReference != null)
             Reticle.ReticleReference.ReticleSprite.enabled = true;
     }
-    void Update()
+    void Update()               
     {
         CurrentAnimator.SetFloat("Speed", Player.playerInstance.speed);
-        if (CurrentWeaponType == WeaponType.Melee || CurrentWeaponType == WeaponType.GrapplingHook)
+        if (CurrentWeaponType == WeaponType.Melee || CurrentWeaponType == WeaponType.GrapplingHook) //plays animation of different weapon according to player input 
         {
             
             if (Input.GetMouseButtonDown(0))
@@ -146,7 +146,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
-    public void Shoot()
+    public void Shoot()               
     {
         if(CurrentWeaponType==WeaponType.Melee)
         {
@@ -187,7 +187,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         WeaponParticleSystem.gameObject.SetActive(false);
     }
-    IEnumerator AimPose(bool Status,float Duration)
+    IEnumerator AimPose(bool Status,float Duration)    //adjusts the position of gun while aiming down sights
     {
 
         float t = 0;
