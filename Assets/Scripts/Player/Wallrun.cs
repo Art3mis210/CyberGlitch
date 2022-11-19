@@ -31,7 +31,7 @@ public class Wallrun : MonoBehaviour
     void Update()
     {
 
-        if(!Player.playerInstance.Grounded && Input.GetAxis("Vertical")>0)
+        if(!Player.playerInstance.Grounded && Input.GetAxis("Vertical")>0) //checks for wall when player is not grounded and moving forward
         {
             CheckWallRun();
             if(leftWall || rightWall)
@@ -99,7 +99,7 @@ public class Wallrun : MonoBehaviour
         }
         WallRunMode = false;
     }
-    IEnumerator TiltCamera(float Tilt,float Duration)
+    IEnumerator TiltCamera(float Tilt,float Duration)       //creates wall run effect by tilting the camera 
     {
         float t = 0;
         while(t<Duration)
