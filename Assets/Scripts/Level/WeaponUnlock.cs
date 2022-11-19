@@ -6,14 +6,14 @@ public class WeaponUnlock : MonoBehaviour
 {
     [SerializeField] int WeaponID;
     bool WeaponUnlocked;
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)      
     {
         if(other.gameObject.tag=="Player")
         {
             if(!WeaponUnlocked)
             {
                 WeaponUnlocked = true;
-                Player.playerInstance.UnlockedWeapons[WeaponID] = true;
+                Player.playerInstance.UnlockedWeapons[WeaponID] = true;  //unlocks and adds weapon using weapon id to player inventory
             }
         }
     }
