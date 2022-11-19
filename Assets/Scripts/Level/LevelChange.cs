@@ -16,16 +16,16 @@ public class LevelChange : MonoBehaviour
                 levelLoad = true;
                 if (ReloadLevel)
                 {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);     //reloads current scene
                 }
                 else
                 {
-                    if(SceneManager.GetActiveScene().name=="Level 5")
+                    if(SceneManager.GetActiveScene().name=="Level 5")           //loads menu scene when player completes level 5
                     {
                         SceneManager.LoadScene("Lab");
                     }
                     else
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);  //loads next level
                 }
             }
         }
