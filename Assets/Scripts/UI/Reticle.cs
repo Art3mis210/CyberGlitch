@@ -13,7 +13,7 @@ public class Reticle : MonoBehaviour
     public Image ReticleSprite;
     private void Awake()
     {
-        ReticleSprite = GetComponent<Image>();
-        ReticleReference = this;
+        ReticleSprite = GetComponent<Image>();  
+        ReticleReference = this;                //gets the reference of reticle image which can be accessed from other scripts using singleton
     }
 }
