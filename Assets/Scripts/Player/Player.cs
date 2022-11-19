@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    void Movement()
+    void Movement()         //manages Player movement according to keyboard input
     {
         if (MovementEnabled)
         {
@@ -167,7 +167,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    void PlayerRotate()
+    void PlayerRotate()         //rotate player according to mouse input
     {
         if (RotationEnabled && Time.timeScale!=0)
         {
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
         StartCoroutine(FallingDown(5));
        
     }
-    IEnumerator FallingDown(float Duration)
+    IEnumerator FallingDown(float Duration)         //creates player death effect
     {
         playerRigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         float t = 0;
@@ -230,6 +230,6 @@ public class Player : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  //restarts the level
     }
 }
