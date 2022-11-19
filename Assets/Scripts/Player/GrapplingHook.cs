@@ -29,7 +29,7 @@ public class GrapplingHook : MonoBehaviour
     {
         if (GrappleMode)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))            //Makes the player jump while in grapple mode resulting in exiting grapple mode
             {
                 playerRigidbody.AddForce(player.transform.up * jumpForce, ForceMode.VelocityChange);
                 EndGrapple();
@@ -45,7 +45,7 @@ public class GrapplingHook : MonoBehaviour
         
             
     }
-    public void StartGrapple()
+    public void StartGrapple()  //raycasts from the front of grappling gun and then adds a spring joint on player with respect to grappled object
     {
         if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward,out hit,MaxDistance,GrappleLayer))
         {
@@ -58,8 +58,8 @@ public class GrapplingHook : MonoBehaviour
 
             float DistanceFromPoint = Vector3.Distance(GrapplePoint, GrappleTip.position);
 
-            joint.maxDistance = 5;//DistanceFromPoint * 0.8f;
-            joint.minDistance = 2;//DistanceFromPoint * 0.25f;
+            joint.maxDistance = 5;
+            joint.minDistance = 2;
 
             joint.spring = 200f;
             joint.damper = 7f;
@@ -71,12 +71,12 @@ public class GrapplingHook : MonoBehaviour
         }
     }
 
-    void DrawRope()
+    void DrawRope()         //sets the position of the line renderer to the grapple point and grapple gun
     {
         lineR.SetPosition(0, GrapplePoint);
         lineR.SetPosition(1, GrappleTip.transform.position);
     }
-    void EndGrapple()
+    void EndGrapple()       //exits grapple mode
     {
         lineR.positionCount = 0;
         GrappleMode = false;
@@ -85,7 +85,7 @@ public class GrapplingHook : MonoBehaviour
         if (joint != null)
             joint.spring = 0;
     }
-    private void OnDisable()
+    private void OnDisable()    //when grappling gun is holstered grapple mode ends
     {
         EndGrapple();
     }
